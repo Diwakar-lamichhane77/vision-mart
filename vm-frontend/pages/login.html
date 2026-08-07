@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>document.documentElement.classList.add("js");</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in — Vision Mart</title>
+  <meta name="description" content="Sign in to your Vision Mart account to track orders, save frames and check out faster.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/auth.css">
+</head>
+
+<body>
+  <main class="vm-auth">
+
+    <!-- ---------------------------- Left panel --------------------------- -->
+    <aside class="vm-auth__aside">
+      <a class="vm-auth__brand" href="../index.html">
+        <span class="vm-auth__brand-name">Vision Mart</span>
+        <span class="vm-auth__brand-mark">Est. 2019</span>
+      </a>
+
+      <div class="vm-auth__pitch">
+        <h2>Welcome<br><em>back.</em></h2>
+        <p>Your saved frames, prescriptions and order history are right where
+           you left them.</p>
+
+        <ul class="vm-auth__perks">
+          <li><i class="bi bi-bag-check"></i><span>Track every order from dispatch to your door</span></li>
+          <li><i class="bi bi-heart"></i><span>Keep a wishlist across your devices</span></li>
+          <li><i class="bi bi-lightning-charge"></i><span>Check out without retyping your details</span></li>
+        </ul>
+      </div>
+
+      <p class="vm-auth__foot">Thamel Marg 12 · Kathmandu 44600</p>
+    </aside>
+
+    <!-- ------------------------------ Form ------------------------------- -->
+    <section class="vm-auth__main">
+      <div class="vm-auth__form-wrap">
+
+        <a class="vm-auth__back" href="../index.html">
+          <i class="bi bi-arrow-left"></i> Back to store
+        </a>
+
+        <h1 class="vm-auth__title">Sign in</h1>
+        <p class="vm-auth__sub">Enter your details to continue.</p>
+
+        <form id="loginForm" novalidate>
+
+          <!-- Form-level errors (wrong credentials, blocked account, offline) -->
+          <div class="vm-auth__alert" role="alert">
+            <i class="bi bi-exclamation-circle-fill"></i><span></span>
+          </div>
+
+          <div class="vm-field">
+            <label class="vm-field__label" for="loginEmail">Email</label>
+            <input class="vm-input" type="email" id="loginEmail" name="email"
+                   placeholder="you@example.com" autocomplete="email"
+                   required aria-describedby="loginEmailError">
+            <div class="vm-field__error" id="loginEmailError"></div>
+          </div>
+
+          <div class="vm-field">
+            <label class="vm-field__label" for="loginPassword">Password</label>
+            <div class="vm-field__wrap">
+              <input class="vm-input" type="password" id="loginPassword" name="password"
+                     placeholder="Your password" autocomplete="current-password"
+                     required aria-describedby="loginPasswordError">
+              <button class="vm-peek" type="button" data-peek="loginPassword"
+                      aria-label="Show password">
+                <i class="bi bi-eye"></i>
+              </button>
+            </div>
+            <div class="vm-field__error" id="loginPasswordError"></div>
+          </div>
+
+          <div class="vm-auth__row">
+            <label class="vm-check">
+              <input type="checkbox" id="rememberMe" name="remember">
+              <span>Remember me</span>
+            </label>
+            <a class="vm-auth__link" href="#" id="forgotLink">Forgot password?</a>
+          </div>
+
+          <button class="vm-btn vm-btn--coat vm-btn--block" type="submit" id="loginSubmit">
+            Sign in
+          </button>
+        </form>
+
+        <p class="vm-auth__switch">
+          New to Vision Mart? <a href="register.html">Create an account</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- --------------------- Forgot password explainer --------------------- -->
+  <div class="vm-modal" id="forgotModal" role="dialog" aria-modal="true"
+       aria-labelledby="forgotTitle">
+    <div class="vm-modal__panel">
+      <h3 id="forgotTitle">Resetting your password</h3>
+      <p>
+        Self-service password reset isn't available yet. Email us from the
+        address on your account and we'll verify you and reset it by hand,
+        usually the same working day.
+      </p>
+      <div class="d-flex gap-2 flex-wrap mt-3">
+        <a class="vm-btn vm-btn--coat vm-btn--sm"
+           href="mailto:support@visionmart.com?subject=Password%20reset%20request">
+          Email support
+        </a>
+        <button class="vm-btn vm-btn--outline vm-btn--sm" type="button" data-close-modal>
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/config.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/components.js"></script>
+  <script src="../js/auth.js"></script>
+</body>
+</html>

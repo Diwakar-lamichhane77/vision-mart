@@ -1,0 +1,357 @@
+/* ==========================================================================
+   Vision Mart — Authentication
+   Split layout: a dark editorial panel on the left, the form on the right.
+   Reuses the tokens in variables.css; introduces no new colours.
+   ========================================================================== */
+
+.vm-auth {
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+}
+
+/* ------------------------------- Left panel ------------------------------ */
+.vm-auth__aside {
+  position: relative;
+  background: var(--vm-ink);
+  color: var(--vm-paper);
+  padding: clamp(2rem, 4vw, 3.5rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+/* The same optical bloom used on the home hero, so the pages feel related. */
+.vm-auth__aside::before {
+  content: "";
+  position: absolute;
+  width: 120%;
+  padding-bottom: 120%;
+  left: -30%;
+  bottom: -45%;
+  background: radial-gradient(circle,
+              rgba(14, 110, 88, 0.45) 0%,
+              rgba(14, 110, 88, 0.10) 45%,
+              transparent 70%);
+  filter: blur(26px);
+  pointer-events: none;
+}
+
+.vm-auth__aside > * { position: relative; z-index: 1; }
+
+.vm-auth__brand {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.55rem;
+}
+.vm-auth__brand-name {
+  font-family: var(--vm-display);
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+.vm-auth__brand-mark {
+  font-family: var(--vm-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.vm-auth__pitch { max-width: 34ch; }
+.vm-auth__pitch h2 {
+  font-size: clamp(1.9rem, 3.2vw, 2.9rem);
+  line-height: 1.06;
+  margin-bottom: 1rem;
+}
+.vm-auth__pitch h2 em { font-style: italic; color: var(--vm-brass); }
+.vm-auth__pitch p {
+  color: rgba(255, 255, 255, 0.72);
+  margin: 0;
+}
+
+/* What an account actually gets you — reasons, not decoration. */
+.vm-auth__perks {
+  list-style: none;
+  padding: 0;
+  margin: 1.75rem 0 0;
+  display: grid;
+  gap: 0.7rem;
+}
+.vm-auth__perks li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: var(--vm-fs-sm);
+  color: rgba(255, 255, 255, 0.78);
+}
+.vm-auth__perks i { color: var(--vm-brass); margin-top: 0.15rem; }
+
+.vm-auth__foot {
+  font-family: var(--vm-mono);
+  font-size: var(--vm-fs-xs);
+  letter-spacing: 0.06em;
+  color: var(--vm-slate);
+}
+
+/* ------------------------------- Form side ------------------------------- */
+.vm-auth__main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1.75rem, 4vw, 3.5rem) clamp(1.25rem, 4vw, 3rem);
+  background: var(--vm-paper);
+}
+
+.vm-auth__form-wrap { width: 100%; max-width: 460px; }
+.vm-auth--wide .vm-auth__form-wrap { max-width: 560px; }
+
+.vm-auth__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: var(--vm-fs-sm);
+  color: var(--vm-graphite);
+  margin-bottom: 2rem;
+}
+.vm-auth__back:hover { color: var(--vm-ink); }
+
+.vm-auth__title {
+  font-size: clamp(1.9rem, 3vw, 2.4rem);
+  margin-bottom: 0.5rem;
+}
+.vm-auth__sub {
+  color: var(--vm-graphite);
+  font-size: var(--vm-fs-sm);
+  margin-bottom: 2rem;
+}
+
+/* --------------------------------- Fields -------------------------------- */
+.vm-field { margin-bottom: 1.1rem; }
+
+.vm-field__label {
+  display: block;
+  font-size: var(--vm-fs-sm);
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+}
+.vm-field__optional {
+  font-weight: 400;
+  color: var(--vm-slate);
+  font-size: var(--vm-fs-xs);
+}
+
+.vm-input {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  font-family: var(--vm-body);
+  font-size: 0.9375rem;
+  color: var(--vm-ink);
+  background: var(--vm-paper);
+  border: 1px solid var(--vm-line);
+  border-radius: var(--vm-radius);
+  transition: border-color var(--vm-fast), box-shadow var(--vm-fast);
+}
+.vm-input::placeholder { color: var(--vm-slate); }
+.vm-input:focus {
+  outline: none;
+  border-color: var(--vm-coat);
+  box-shadow: 0 0 0 3px var(--vm-coat-wash);
+}
+.vm-input.is-invalid {
+  border-color: var(--vm-danger);
+}
+.vm-input.is-invalid:focus {
+  box-shadow: 0 0 0 3px rgba(180, 35, 31, 0.12);
+}
+
+/* Field-level error text. Hidden until a message is set. */
+.vm-field__error {
+  display: none;
+  font-size: var(--vm-fs-xs);
+  color: var(--vm-danger);
+  margin-top: 0.35rem;
+}
+.vm-field__error:not(:empty) { display: block; }
+
+/* Password field with a reveal toggle */
+.vm-field__wrap { position: relative; }
+.vm-field__wrap .vm-input { padding-right: 3rem; }
+.vm-peek {
+  position: absolute;
+  right: 0.35rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  background: none;
+  border: none;
+  color: var(--vm-slate);
+  cursor: pointer;
+  border-radius: var(--vm-radius);
+}
+.vm-peek:hover { color: var(--vm-ink); }
+
+/* ---------------------------- Password rules ----------------------------- */
+/* Mirrors the server's rules exactly, ticking off as they're met. */
+.vm-rules {
+  list-style: none;
+  padding: 0;
+  margin: 0.65rem 0 0;
+  display: grid;
+  gap: 0.3rem;
+}
+.vm-rules li {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: var(--vm-fs-xs);
+  color: var(--vm-slate);
+  transition: color var(--vm-fast);
+}
+.vm-rules li::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  border: 1px solid var(--vm-line);
+  border-radius: var(--vm-radius-round);
+  transition: background var(--vm-fast), border-color var(--vm-fast);
+}
+.vm-rules li.is-met { color: var(--vm-coat-deep); }
+.vm-rules li.is-met::before {
+  background: var(--vm-coat);
+  border-color: var(--vm-coat);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 8.5l3 3 6-6'/%3E%3C/svg%3E");
+  background-size: 11px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* ------------------------------- Form extras ----------------------------- */
+.vm-auth__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.vm-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--vm-fs-sm);
+  color: var(--vm-graphite);
+  cursor: pointer;
+}
+.vm-check input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--vm-coat);
+  cursor: pointer;
+}
+
+.vm-auth__link {
+  font-size: var(--vm-fs-sm);
+  color: var(--vm-coat-deep);
+  font-weight: 500;
+}
+.vm-auth__link:hover { text-decoration: underline; }
+
+/* A form-wide error (bad credentials, duplicate email, server down). */
+.vm-auth__alert {
+  display: none;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1.25rem;
+  font-size: var(--vm-fs-sm);
+  color: #7A1815;
+  background: rgba(180, 35, 31, 0.08);
+  border: 1px solid rgba(180, 35, 31, 0.22);
+  border-radius: var(--vm-radius);
+}
+.vm-auth__alert.is-shown { display: flex; }
+.vm-auth__alert i { margin-top: 0.1rem; flex-shrink: 0; }
+
+.vm-auth__switch {
+  margin-top: 1.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--vm-line);
+  font-size: var(--vm-fs-sm);
+  color: var(--vm-graphite);
+  text-align: center;
+}
+.vm-auth__switch a { color: var(--vm-ink); font-weight: 500; }
+.vm-auth__switch a:hover { color: var(--vm-coat-deep); }
+
+/* --------------------------- Button loading state ------------------------ */
+.vm-spinner {
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: vm-spin 0.65s linear infinite;
+}
+@keyframes vm-spin { to { transform: rotate(360deg); } }
+
+.vm-btn[aria-busy="true"] { pointer-events: none; opacity: 0.75; }
+
+/* --------------------------------- Modal --------------------------------- */
+/* Used for "forgot password", which has no server-side flow yet. */
+.vm-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1090;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  background: rgba(22, 24, 29, 0.55);
+}
+.vm-modal.is-open { display: flex; }
+.vm-modal__panel {
+  width: 100%;
+  max-width: 420px;
+  padding: 1.75rem;
+  background: var(--vm-paper);
+  border-radius: var(--vm-radius-lg);
+  box-shadow: var(--vm-shadow-lg);
+}
+.vm-modal__panel h3 { font-size: 1.4rem; margin-bottom: 0.6rem; }
+.vm-modal__panel p { color: var(--vm-graphite); font-size: var(--vm-fs-sm); }
+
+/* -------------------------------- Responsive ----------------------------- */
+@media (max-width: 991.98px) {
+  .vm-auth { grid-template-columns: 1fr; min-height: 0; }
+  .vm-auth__aside {
+    padding: 1.75rem var(--vm-gutter);
+    min-height: auto;
+  }
+  /* On small screens the pitch and perks are noise above a form — the brand
+     bar is enough context. */
+  .vm-auth__pitch,
+  .vm-auth__perks,
+  .vm-auth__foot { display: none; }
+  .vm-auth__aside {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .vm-auth__main { padding-block: 2.5rem; }
+}
+
+/* Two-up fields on the register form, stacked on narrow screens. */
+.vm-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 1rem;
+}
+@media (max-width: 575.98px) {
+  .vm-grid-2 { grid-template-columns: 1fr; }
+}

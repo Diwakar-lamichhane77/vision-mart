@@ -1,0 +1,311 @@
+/* ==========================================================================
+   Vision Mart — Cart & Wishlist
+   Line items on the left, a sticky summary on the right.
+   ========================================================================== */
+
+.vm-bag-head {
+  padding-top: calc(var(--vm-nav-h) + clamp(2rem, 4vw, 3.5rem));
+  padding-bottom: clamp(1.25rem, 2.5vw, 2rem);
+}
+.vm-bag-head h1 { font-size: var(--vm-fs-display); margin-bottom: 0.35rem; }
+.vm-bag-head p { color: var(--vm-graphite); margin: 0; }
+
+.vm-bag {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  align-items: start;
+  padding-bottom: clamp(3rem, 6vw, 5rem);
+}
+.vm-bag--single { grid-template-columns: 1fr; }
+
+/* ------------------------------- Line items ------------------------------ */
+.vm-lines {
+  border-top: 1px solid var(--vm-line);
+}
+
+.vm-line {
+  display: grid;
+  grid-template-columns: 108px 1fr auto;
+  gap: 1.25rem;
+  padding: 1.35rem 0;
+  border-bottom: 1px solid var(--vm-line);
+  align-items: start;
+}
+/* Dim a row while its request is in flight, so it's obvious something's happening. */
+.vm-line.is-busy { opacity: 0.5; pointer-events: none; }
+
+.vm-line__media {
+  width: 108px;
+  aspect-ratio: 1;
+  background: var(--vm-mist-soft);
+  border-radius: var(--vm-radius);
+  overflow: hidden;
+}
+.vm-line__media img { width: 100%; height: 100%; object-fit: cover; }
+
+.vm-line__brand {
+  font-family: var(--vm-mono);
+  font-size: var(--vm-fs-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--vm-slate);
+  margin-bottom: 0.2rem;
+}
+.vm-line__name {
+  font-size: 1rem;
+  font-weight: 500;
+  display: inline-block;
+  margin-bottom: 0.35rem;
+}
+.vm-line__name:hover { color: var(--vm-coat); }
+
+.vm-line__unit {
+  font-size: var(--vm-fs-sm);
+  color: var(--vm-graphite);
+  margin-bottom: 0.75rem;
+}
+.vm-line__was {
+  color: var(--vm-slate);
+  text-decoration: line-through;
+  margin-left: 0.35rem;
+}
+
+.vm-line__controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.vm-line__right {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  min-width: 96px;
+}
+.vm-line__subtotal { font-size: 1.05rem; font-weight: 600; white-space: nowrap; }
+
+.vm-line__remove {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: var(--vm-fs-sm);
+  color: var(--vm-slate);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.vm-line__remove:hover { color: var(--vm-danger); }
+
+/* Per-line warning: went out of stock, or quantity now exceeds what's left. */
+.vm-line__warn {
+  grid-column: 2 / -1;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+  padding: 0.6rem 0.8rem;
+  font-size: var(--vm-fs-xs);
+  color: #7A1815;
+  background: rgba(180, 35, 31, 0.07);
+  border-radius: var(--vm-radius);
+}
+.vm-line__warn i { margin-top: 0.1rem; }
+
+/* -------------------------------- Quantity ------------------------------- */
+.vm-qty {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--vm-line);
+  border-radius: var(--vm-radius);
+  overflow: hidden;
+}
+.vm-qty button {
+  width: 38px;
+  height: 38px;
+  background: none;
+  border: none;
+  color: var(--vm-ink);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background var(--vm-fast);
+}
+.vm-qty button:hover:not(:disabled) { background: var(--vm-mist-soft); }
+.vm-qty button:disabled { color: var(--vm-slate); cursor: not-allowed; }
+.vm-qty input {
+  width: 44px;
+  height: 38px;
+  border: none;
+  text-align: center;
+  font-family: var(--vm-mono);
+  font-size: 0.9rem;
+  color: var(--vm-ink);
+  -moz-appearance: textfield;
+}
+.vm-qty input::-webkit-outer-spin-button,
+.vm-qty input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.vm-qty input:focus { outline: none; background: var(--vm-mist-soft); }
+
+/* --------------------------------- Summary ------------------------------- */
+.vm-summary {
+  position: sticky;
+  top: calc(var(--vm-nav-h) + 1.25rem);
+  border: 1px solid var(--vm-line);
+  border-radius: var(--vm-radius);
+  padding: 1.5rem;
+}
+.vm-summary h2 {
+  font-size: 1.25rem;
+  margin-bottom: 1.15rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--vm-line);
+}
+
+.vm-sum-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 0.4rem;
+  font-size: var(--vm-fs-sm);
+  color: var(--vm-graphite);
+}
+.vm-sum-row strong { color: var(--vm-ink); font-weight: 500; }
+.vm-sum-row--free strong { color: var(--vm-coat-deep); }
+
+.vm-sum-total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.85rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--vm-line);
+}
+.vm-sum-total span { font-size: 1rem; font-weight: 500; }
+.vm-sum-total strong { font-size: 1.4rem; font-weight: 700; }
+
+/* Progress toward free shipping — concrete, not a vague upsell. */
+.vm-ship-progress { margin: 0.9rem 0 0.25rem; }
+.vm-ship-progress__track {
+  display: block;
+  height: 5px;
+  background: var(--vm-mist);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.vm-ship-progress__fill {
+  display: block;
+  height: 100%;
+  background: var(--vm-coat);
+  border-radius: 999px;
+  transition: width var(--vm-slow);
+}
+.vm-ship-note {
+  font-size: var(--vm-fs-xs);
+  color: var(--vm-graphite);
+  margin-top: 0.45rem;
+}
+
+.vm-summary__note {
+  font-size: var(--vm-fs-xs);
+  color: var(--vm-slate);
+  margin-top: 0.85rem;
+  line-height: 1.55;
+}
+
+.vm-summary__actions { margin-top: 1.25rem; display: grid; gap: 0.55rem; }
+
+/* Blocks checkout when a line is unbuyable. */
+.vm-summary__block {
+  display: flex;
+  gap: 0.55rem;
+  align-items: flex-start;
+  margin-top: 1rem;
+  padding: 0.75rem 0.85rem;
+  font-size: var(--vm-fs-xs);
+  color: #7A1815;
+  background: rgba(180, 35, 31, 0.07);
+  border-radius: var(--vm-radius);
+}
+
+/* ------------------------------ Wishlist grid ---------------------------- */
+.vm-wish-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: clamp(1.25rem, 2.5vw, 2rem) clamp(1rem, 2vw, 1.5rem);
+}
+
+.vm-wish-card { position: relative; display: flex; flex-direction: column; }
+.vm-wish-card.is-busy { opacity: 0.5; pointer-events: none; }
+
+.vm-wish-card__media {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  background: var(--vm-mist-soft);
+  border-radius: var(--vm-radius);
+  overflow: hidden;
+  margin-bottom: 0.85rem;
+}
+.vm-wish-card__media img { width: 100%; height: 100%; object-fit: cover; }
+
+.vm-wish-card__drop {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  width: 36px; height: 36px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.94);
+  border: none;
+  border-radius: var(--vm-radius-round);
+  color: var(--vm-ink);
+  cursor: pointer;
+  transition: color var(--vm-fast);
+}
+.vm-wish-card__drop:hover { color: var(--vm-danger); }
+
+.vm-wish-card__added {
+  font-family: var(--vm-mono);
+  font-size: var(--vm-fs-xs);
+  color: var(--vm-slate);
+  margin-top: 0.4rem;
+}
+
+.vm-wish-card__actions { margin-top: auto; padding-top: 0.75rem; }
+
+.vm-bag-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+
+/* -------------------------------- Responsive ----------------------------- */
+@media (max-width: 991.98px) {
+  .vm-bag { grid-template-columns: 1fr; }
+  .vm-summary { position: static; }
+}
+
+@media (max-width: 575.98px) {
+  .vm-line {
+    grid-template-columns: 84px 1fr;
+    gap: 0.9rem;
+  }
+  .vm-line__media { width: 84px; }
+  /* Price and remove drop below the details rather than squeezing a third column. */
+  .vm-line__right {
+    grid-column: 2 / -1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+  .vm-wish-grid { grid-template-columns: repeat(2, 1fr); gap: 1.25rem 0.75rem; }
+}

@@ -1,0 +1,451 @@
+/* ==========================================================================
+   Vision Mart — Shop
+   Filter rail + results grid. On mobile the rail becomes a slide-in sheet.
+   ========================================================================== */
+
+.vm-shop-head {
+  padding-top: calc(var(--vm-nav-h) + clamp(2rem, 4vw, 3.5rem));
+  padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  background: var(--vm-mist-soft);
+  border-bottom: 1px solid var(--vm-line);
+}
+.vm-shop-head h1 { font-size: var(--vm-fs-display); margin-bottom: 0.4rem; }
+.vm-shop-head p { color: var(--vm-graphite); margin: 0; }
+
+.vm-breadcrumb {
+  font-family: var(--vm-mono);
+  font-size: var(--vm-fs-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--vm-slate);
+  margin-bottom: 0.75rem;
+}
+.vm-breadcrumb a:hover { color: var(--vm-ink); }
+
+/* ------------------------------- Page layout ----------------------------- */
+.vm-shop {
+  display: grid;
+  grid-template-columns: 268px 1fr;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  padding-block: clamp(2rem, 4vw, 3rem);
+  align-items: start;
+}
+
+/* --------------------------------- Toolbar ------------------------------- */
+.vm-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.vm-search {
+  position: relative;
+  flex: 1 1 240px;
+  min-width: 0;
+}
+.vm-search i {
+  position: absolute;
+  left: 0.9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--vm-slate);
+  font-size: 0.95rem;
+  pointer-events: none;
+}
+.vm-search input {
+  width: 100%;
+  padding: 0.75rem 2.4rem 0.75rem 2.5rem;
+  font-family: var(--vm-body);
+  font-size: 0.9375rem;
+  border: 1px solid var(--vm-line);
+  border-radius: var(--vm-radius);
+  background: var(--vm-paper);
+  color: var(--vm-ink);
+}
+.vm-search input:focus {
+  outline: none;
+  border-color: var(--vm-coat);
+  box-shadow: 0 0 0 3px var(--vm-coat-wash);
+}
+.vm-search__clear {
+  position: absolute;
+  right: 0.4rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px; height: 30px;
+  display: none;
+  place-items: center;
+  background: none;
+  border: none;
+  color: var(--vm-slate);
+  cursor: pointer;
+}
+.vm-search__clear.is-shown { display: grid; }
+.vm-search__clear:hover { color: var(--vm-ink); }
+
+.vm-select {
+  padding: 0.75rem 2.2rem 0.75rem 0.9rem;
+  font-family: var(--vm-body);
+  font-size: 0.875rem;
+  color: var(--vm-ink);
+  background: var(--vm-paper);
+  border: 1px solid var(--vm-line);
+  border-radius: var(--vm-radius);
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%235A626C' stroke-width='1.6'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.7rem center;
+  background-size: 15px;
+}
+.vm-select:focus { outline: none; border-color: var(--vm-coat); }
+
+.vm-filter-toggle { display: none; }
+
+.vm-count {
+  font-family: var(--vm-mono);
+  font-size: var(--vm-fs-xs);
+  letter-spacing: 0.06em;
+  color: var(--vm-slate);
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+/* --------------------------- Active filter chips ------------------------- */
+.vm-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 1.25rem;
+}
+.vm-chips:empty { display: none; }
+
+.vm-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.5rem 0.35rem 0.7rem;
+  font-size: var(--vm-fs-xs);
+  background: var(--vm-mist);
+  border-radius: var(--vm-radius-pill, 999px);
+  color: var(--vm-ink-soft);
+}
+.vm-chip button {
+  background: none;
+  border: none;
+  padding: 0;
+  width: 16px; height: 16px;
+  display: grid;
+  place-items: center;
+  color: var(--vm-graphite);
+  cursor: pointer;
+  font-size: 0.7rem;
+}
+.vm-chip button:hover { color: var(--vm-danger); }
+
+.vm-chip--clear {
+  background: transparent;
+  border: 1px solid var(--vm-line);
+  cursor: pointer;
+  padding: 0.35rem 0.7rem;
+}
+.vm-chip--clear:hover { border-color: var(--vm-ink); }
+
+/* -------------------------------- Filter rail ---------------------------- */
+/* Only ever visible as the mobile sheet backdrop — never a grid item. */
+.vm-filters__scrim { display: none; }
+
+.vm-filters {
+  position: sticky;
+  top: calc(var(--vm-nav-h) + 1rem);
+  border: 1px solid var(--vm-line);
+  border-radius: var(--vm-radius);
+  background: var(--vm-paper);
+  overflow: hidden;
+}
+
+.vm-filters__head {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.15rem;
+  border-bottom: 1px solid var(--vm-line);
+}
+
+.vm-fgroup { border-bottom: 1px solid var(--vm-line); }
+.vm-fgroup:last-child { border-bottom: none; }
+
+.vm-fgroup__btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.95rem 1.15rem;
+  background: none;
+  border: none;
+  font-family: var(--vm-body);
+  font-size: var(--vm-fs-sm);
+  font-weight: 500;
+  color: var(--vm-ink);
+  cursor: pointer;
+  text-align: left;
+}
+.vm-fgroup__btn i { font-size: 0.7rem; color: var(--vm-slate); transition: transform var(--vm-fast); }
+.vm-fgroup.is-collapsed .vm-fgroup__btn i { transform: rotate(-90deg); }
+
+.vm-fgroup__body { padding: 0 1.15rem 1.1rem; }
+.vm-fgroup.is-collapsed .vm-fgroup__body { display: none; }
+
+/* Scrollable option lists so a long brand list can't take over the page. */
+.vm-fopts {
+  display: grid;
+  gap: 0.55rem;
+  max-height: 208px;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+.vm-fopts::-webkit-scrollbar { width: 3px; }
+.vm-fopts::-webkit-scrollbar-thumb { background: var(--vm-line); }
+
+.vm-fopt {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: var(--vm-fs-sm);
+  color: var(--vm-graphite);
+  cursor: pointer;
+}
+.vm-fopt input {
+  width: 15px; height: 15px;
+  accent-color: var(--vm-coat);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.vm-fopt:hover { color: var(--vm-ink); }
+.vm-fopt__count {
+  margin-left: auto;
+  font-family: var(--vm-mono);
+  font-size: var(--vm-fs-xs);
+  color: var(--vm-slate);
+}
+
+/* Price inputs */
+.vm-price-row { display: flex; align-items: center; gap: 0.5rem; }
+.vm-price-row input {
+  width: 100%;
+  min-width: 0;
+  padding: 0.6rem 0.65rem;
+  font-family: var(--vm-mono);
+  font-size: var(--vm-fs-sm);
+  border: 1px solid var(--vm-line);
+  border-radius: var(--vm-radius);
+  color: var(--vm-ink);
+}
+.vm-price-row input:focus { outline: none; border-color: var(--vm-coat); }
+.vm-price-row span { color: var(--vm-slate); }
+.vm-price-hint {
+  font-family: var(--vm-mono);
+  font-size: var(--vm-fs-xs);
+  color: var(--vm-slate);
+  margin-top: 0.5rem;
+}
+
+/* ------------------------------- Results grid ---------------------------- */
+.vm-results {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: clamp(1.25rem, 2.5vw, 2rem) clamp(1rem, 2vw, 1.5rem);
+}
+
+/* Quick-view button — sits beside the wishlist heart. */
+.vm-card__quick {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  transform: translateY(-4px);
+  width: 38px; height: 38px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.92);
+  border: none;
+  border-radius: var(--vm-radius-round);
+  color: var(--vm-ink);
+  font-size: 0.95rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--vm-fast), transform var(--vm-fast);
+}
+/* Stack it under the wishlist button. */
+.vm-card__wish { top: 0.6rem; }
+.vm-card__quick { top: 3.1rem; }
+.vm-card:hover .vm-card__quick,
+.vm-card__quick:focus-visible { opacity: 1; transform: none; }
+@media (hover: none) { .vm-card__quick { opacity: 1; transform: none; } }
+
+/* -------------------------------- Pagination ----------------------------- */
+.vm-pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+}
+.vm-pager:empty { display: none; }
+
+.vm-pager button {
+  min-width: 42px;
+  height: 42px;
+  padding-inline: 0.6rem;
+  display: inline-grid;
+  place-items: center;
+  font-family: var(--vm-body);
+  font-size: var(--vm-fs-sm);
+  color: var(--vm-ink);
+  background: var(--vm-paper);
+  border: 1px solid var(--vm-line);
+  border-radius: var(--vm-radius);
+  cursor: pointer;
+  transition: border-color var(--vm-fast), background var(--vm-fast), color var(--vm-fast);
+}
+.vm-pager button:hover:not(:disabled):not(.is-current) { border-color: var(--vm-ink); }
+.vm-pager button.is-current {
+  background: var(--vm-ink);
+  border-color: var(--vm-ink);
+  color: var(--vm-paper);
+  cursor: default;
+}
+.vm-pager button:disabled { opacity: 0.4; cursor: not-allowed; }
+.vm-pager__gap { color: var(--vm-slate); padding-inline: 0.25rem; }
+
+/* -------------------------------- Quick view ----------------------------- */
+.vm-qv {
+  position: fixed;
+  inset: 0;
+  z-index: 1095;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  background: rgba(22, 24, 29, 0.6);
+}
+.vm-qv.is-open { display: flex; }
+
+.vm-qv__panel {
+  position: relative;
+  width: 100%;
+  max-width: 820px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--vm-paper);
+  border-radius: var(--vm-radius-lg);
+  box-shadow: var(--vm-shadow-lg);
+}
+
+.vm-qv__close {
+  position: absolute;
+  top: 0.65rem;
+  right: 0.65rem;
+  z-index: 2;
+  width: 38px; height: 38px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: var(--vm-radius-round);
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+/* minmax(0,1fr) — a plain 1fr floors at the image's intrinsic width, which
+   crushes the text column. */
+.vm-qv__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+.vm-qv__media {
+  background: var(--vm-mist-soft);
+  aspect-ratio: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+.vm-qv__media img { width: 100%; height: 100%; object-fit: cover; }
+
+.vm-qv__info {
+  min-width: 0;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  display: flex;
+  flex-direction: column;
+}
+.vm-qv__info h3 { font-size: 1.5rem; margin-bottom: 0.35rem; }
+
+/* Spec pairs, laid out as rows rather than the browser's default dl indent. */
+.vm-qv__specs {
+  margin: 0 0 1.25rem;
+  padding: 0.85rem 0 0;
+  border-top: 1px solid var(--vm-line);
+  display: grid;
+  gap: 0.4rem;
+}
+.vm-qv__specs > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: var(--vm-fs-sm);
+}
+.vm-qv__specs dt {
+  color: var(--vm-slate);
+  font-weight: 400;
+}
+.vm-qv__specs dd { margin: 0; text-align: right; }
+
+@media (max-width: 767.98px) {
+  .vm-qv__body { grid-template-columns: 1fr; }
+  .vm-qv__media { aspect-ratio: 16 / 10; }
+}
+
+/* -------------------------------- Responsive ----------------------------- */
+@media (max-width: 991.98px) {
+  .vm-shop { grid-template-columns: 1fr; }
+
+  .vm-filter-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  /* The rail becomes a sheet that slides in from the left. */
+  .vm-filters {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 1060;
+    width: min(86vw, 340px);
+    border: none;
+    border-radius: 0;
+    overflow-y: auto;
+    transform: translateX(-100%);
+    transition: transform var(--vm-slow);
+    box-shadow: var(--vm-shadow-lg);
+  }
+  .vm-filters.is-open { transform: none; }
+  .vm-filters__head { display: flex; }
+
+  .vm-filters__scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 1055;
+    background: rgba(22, 24, 29, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--vm-fast), visibility var(--vm-fast);
+  }
+  .vm-filters__scrim.is-open { opacity: 1; visibility: visible; }
+}
+
+@media (max-width: 575.98px) {
+  .vm-results { grid-template-columns: repeat(2, 1fr); gap: 1.25rem 0.75rem; }
+  .vm-count { width: 100%; margin-left: 0; }
+}

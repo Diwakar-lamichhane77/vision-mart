@@ -1,0 +1,104 @@
+/* ==========================================================================
+   Vision Mart — Footer
+   ========================================================================== */
+
+.vm-footer {
+  background: var(--vm-ink);
+  color: rgba(255, 255, 255, 0.72);
+  padding-top: clamp(3.5rem, 7vw, 6rem);
+  font-size: var(--vm-fs-sm);
+}
+
+.vm-footer__grid {
+  display: grid;
+  grid-template-columns: 1.6fr repeat(3, 1fr);
+  gap: clamp(2rem, 5vw, 4rem);
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+/* ------------------------------- Brand block ----------------------------- */
+.vm-footer__brand-name {
+  font-family: var(--vm-display);
+  font-size: 1.75rem;
+  color: var(--vm-paper);
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.vm-footer__blurb { max-width: 34ch; margin-bottom: 1.5rem; }
+
+/* The store's real detail, set in the same mono used for frame specs. */
+.vm-footer__meta {
+  font-family: var(--vm-mono);
+  font-size: var(--vm-fs-xs);
+  letter-spacing: 0.03em;
+  color: var(--vm-slate);
+  line-height: 1.9;
+}
+.vm-footer__meta a:hover { color: var(--vm-paper); }
+
+/* --------------------------------- Columns ------------------------------- */
+.vm-footer__col h4 {
+  font-family: var(--vm-body);
+  font-size: var(--vm-fs-xs);
+  font-weight: 500;
+  letter-spacing: var(--vm-track-label);
+  text-transform: uppercase;
+  color: var(--vm-brass);
+  margin-bottom: 1.1rem;
+}
+
+.vm-footer__list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.7rem; }
+.vm-footer__list a { transition: color var(--vm-fast); }
+.vm-footer__list a:hover { color: var(--vm-paper); }
+
+/* --------------------------------- Socials ------------------------------- */
+.vm-footer__socials { display: flex; gap: 0.5rem; margin-top: 1.25rem; }
+.vm-footer__socials a {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--vm-radius);
+  font-size: 1rem;
+  transition: background var(--vm-fast), border-color var(--vm-fast), color var(--vm-fast);
+}
+.vm-footer__socials a:hover {
+  background: var(--vm-paper);
+  border-color: var(--vm-paper);
+  color: var(--vm-ink);
+}
+
+/* ------------------------------- Bottom bar ------------------------------ */
+.vm-footer__bar {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-block: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  font-family: var(--vm-mono);
+  font-size: var(--vm-fs-xs);
+  letter-spacing: 0.03em;
+  color: var(--vm-slate);
+}
+
+.vm-footer__pay { display: flex; align-items: center; gap: 0.75rem; }
+.vm-footer__pay span {
+  padding: 0.3rem 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--vm-radius);
+}
+
+/* -------------------------------- Responsive ----------------------------- */
+@media (max-width: 991.98px) {
+  .vm-footer__grid { grid-template-columns: 1fr 1fr; }
+  .vm-footer__brand { grid-column: 1 / -1; }
+}
+
+@media (max-width: 575.98px) {
+  .vm-footer__grid { grid-template-columns: 1fr; gap: 2.25rem; }
+  .vm-footer__bar { justify-content: center; text-align: center; }
+}

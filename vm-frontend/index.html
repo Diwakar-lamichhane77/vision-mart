@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Marks that JS is available. Reveal animations are scoped to .js so the
+       page stays readable if scripts fail to load. -->
+  <script>document.documentElement.classList.add("js");</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vision Mart — Premium eyewear, fitted by opticians</title>
+  <meta name="description" content="Prescription frames, sunglasses and lenses chosen by opticians. Fitted, adjusted and posted from our Kathmandu workshop.">
+
+  <!-- Bodoni Moda: high optical contrast, the typography of fashion optics.
+       DM Sans for reading. DM Mono carries frame measurements. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/footer.css">
+</head>
+
+<body>
+  <a class="vm-skip" href="#main">Skip to content</a>
+
+  <!-- Navbar is rendered by components.js -->
+  <div id="vmNavbar"></div>
+
+  <main id="main">
+
+    <!-- ============================== HERO ============================== -->
+    <section class="vm-hero">
+      <div class="vm-hero__inner">
+        <div>
+          <p class="vm-hero__eyebrow">Opticians since 2019 · Kathmandu</p>
+
+          <!-- The headline resolves from blur to sharp: the page performs
+               the thing the product does. -->
+          <h1 class="vm-hero__title">
+            <span class="vm-hero__line">The world,</span>
+            <span class="vm-hero__line"><em>in focus.</em></span>
+          </h1>
+
+          <p class="vm-hero__lead">
+            Frames selected by working opticians, then fitted to your face and
+            your prescription. No guesswork, no algorithm — just eyewear that
+            sits right and lasts.
+          </p>
+
+          <div class="vm-hero__actions">
+            <a class="vm-btn vm-btn--light" href="pages/shop.html">Shop eyewear</a>
+            <a class="vm-btn vm-btn--ghost" href="pages/categories.html"
+               style="color:#fff">
+              Browse categories <i class="bi bi-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- What actually matters when buying glasses online -->
+        <dl class="vm-hero__facts">
+          <div class="vm-hero__fact">
+            <dt>Fitting</dt>
+            <dd>Free, in store or by post</dd>
+          </div>
+          <div class="vm-hero__fact">
+            <dt>Lenses</dt>
+            <dd>Single vision to progressive</dd>
+          </div>
+          <div class="vm-hero__fact">
+            <dt>Returns</dt>
+            <dd>7 days on unworn frames</dd>
+          </div>
+        </dl>
+      </div>
+
+      <span class="vm-hero__cue"><i class="bi bi-arrow-down"></i> Scroll</span>
+    </section>
+
+    <!-- ============================ STRIP ============================== -->
+    <div class="vm-strip" aria-hidden="true">
+      <div class="vm-strip__track">
+        <span><i class="bi bi-diamond-fill"></i> Free fitting &amp; adjustment</span>
+        <span><i class="bi bi-diamond-fill"></i> Anti-reflective coating included</span>
+        <span><i class="bi bi-diamond-fill"></i> Cash on delivery · eSewa · Khalti</span>
+        <span><i class="bi bi-diamond-fill"></i> Delivery across Nepal</span>
+        <!-- Duplicated so the marquee loops without a visible seam -->
+        <span><i class="bi bi-diamond-fill"></i> Free fitting &amp; adjustment</span>
+        <span><i class="bi bi-diamond-fill"></i> Anti-reflective coating included</span>
+        <span><i class="bi bi-diamond-fill"></i> Cash on delivery · eSewa · Khalti</span>
+        <span><i class="bi bi-diamond-fill"></i> Delivery across Nepal</span>
+      </div>
+    </div>
+
+    <!-- ======================= FEATURED CATEGORIES ===================== -->
+    <section class="vm-section">
+      <div class="vm-shell">
+        <header class="vm-section-head" data-reveal>
+          <div>
+            <span class="vm-eyebrow">Featured categories</span>
+            <h2 class="vm-title">Find your shape</h2>
+          </div>
+          <a class="vm-link" href="pages/categories.html">
+            All categories <i class="bi bi-arrow-right"></i>
+          </a>
+        </header>
+
+        <!-- Filled by home.js -->
+        <div class="vm-cat-grid" id="categoryGrid"></div>
+      </div>
+    </section>
+
+    <!-- ========================= TRENDING PRODUCTS ===================== -->
+    <section class="vm-section vm-section--mist">
+      <div class="vm-shell">
+        <header class="vm-section-head" data-reveal>
+          <div>
+            <span class="vm-eyebrow">Trending now</span>
+            <h2 class="vm-title">What people are wearing</h2>
+            <p class="vm-lead">The frames leaving the workshop most often this month.</p>
+          </div>
+          <a class="vm-link" href="pages/shop.html?sort=popularity">
+            View all <i class="bi bi-arrow-right"></i>
+          </a>
+        </header>
+
+        <div class="vm-product-grid" id="trendingGrid"></div>
+      </div>
+    </section>
+
+    <!-- =========================== BEST SELLERS ======================== -->
+    <section class="vm-section">
+      <div class="vm-shell">
+        <header class="vm-section-head" data-reveal>
+          <div>
+            <span class="vm-eyebrow">Best sellers</span>
+            <h2 class="vm-title">Rated highest by customers</h2>
+          </div>
+          <a class="vm-link" href="pages/shop.html?sort=rating">
+            View all <i class="bi bi-arrow-right"></i>
+          </a>
+        </header>
+
+        <div class="vm-rail" id="bestSellersGrid"></div>
+      </div>
+    </section>
+
+    <!-- =========================== OFFERS BANNER ======================= -->
+    <section class="vm-offer">
+      <div class="vm-shell">
+        <div class="vm-offer__inner">
+          <div data-reveal>
+            <span class="vm-eyebrow">This season</span>
+            <h2 class="vm-offer__title">
+              Second pair,<br><em>half price.</em>
+            </h2>
+            <p class="vm-lead">
+              Add any two frames to your bag and the lower-priced pair drops by
+              50% at checkout. Sunglasses included — prescription or not.
+            </p>
+            <div class="vm-offer__code">
+              Use code <strong>SECONDSIGHT</strong>
+            </div>
+          </div>
+          <div data-reveal data-delay="1">
+            <a class="vm-btn vm-btn--light" href="pages/shop.html">Shop the offer</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================== NEW ARRIVALS ======================== -->
+    <section class="vm-section">
+      <div class="vm-shell">
+        <header class="vm-section-head" data-reveal>
+          <div>
+            <span class="vm-eyebrow">Just landed</span>
+            <h2 class="vm-title">New arrivals</h2>
+            <p class="vm-lead">Fresh from our suppliers in Japan, Italy and Korea.</p>
+          </div>
+          <a class="vm-link" href="pages/shop.html?sort=newest">
+            View all <i class="bi bi-arrow-right"></i>
+          </a>
+        </header>
+
+        <div class="vm-product-grid" id="newArrivalsGrid"></div>
+      </div>
+    </section>
+
+    <!-- =========================== TESTIMONIALS ======================== -->
+    <section class="vm-section vm-section--mist">
+      <div class="vm-shell">
+        <header class="vm-section-head" data-reveal>
+          <div>
+            <span class="vm-eyebrow">From our customers</span>
+            <h2 class="vm-title">Worn every day</h2>
+          </div>
+        </header>
+
+        <div class="vm-quotes">
+          <figure class="vm-quote" data-reveal>
+            <blockquote class="vm-quote__text">
+              “They adjusted the nose pads twice until the frames stopped
+              sliding. No one has ever done that for me before.”
+            </blockquote>
+            <figcaption class="vm-quote__foot">
+              <span class="vm-quote__avatar">S</span>
+              <span class="vm-quote__who">
+                <strong>Sita Gurung</strong>
+                <span>Titan Slim · 52□18-140</span>
+              </span>
+            </figcaption>
+          </figure>
+
+          <figure class="vm-quote" data-reveal data-delay="1">
+            <blockquote class="vm-quote__text">
+              “Ordered on Sunday, wearing them on Tuesday. The blue-light
+              lenses actually made a difference by the end of the week.”
+            </blockquote>
+            <figcaption class="vm-quote__foot">
+              <span class="vm-quote__avatar">R</span>
+              <span class="vm-quote__who">
+                <strong>Ravi Thapa</strong>
+                <span>Bookworm Blue Cut · 54□16-145</span>
+              </span>
+            </figcaption>
+          </figure>
+
+          <figure class="vm-quote" data-reveal data-delay="2">
+            <blockquote class="vm-quote__text">
+              “I have a wide face and gave up on buying glasses online years
+              ago. They measured my old pair over the phone and got it right.”
+            </blockquote>
+            <figcaption class="vm-quote__foot">
+              <span class="vm-quote__avatar">A</span>
+              <span class="vm-quote__who">
+                <strong>Anil Shrestha</strong>
+                <span>Wayfarer Bold · 56□17-145</span>
+              </span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ NEWSLETTER ========================= -->
+    <section class="vm-section">
+      <div class="vm-shell">
+        <div class="vm-news">
+          <div data-reveal>
+            <span class="vm-eyebrow">Newsletter</span>
+            <h2 class="vm-title--sm" style="font-family:var(--vm-display)">
+              First look at new frames
+            </h2>
+            <p class="vm-lead">
+              One email a month: what's arrived, what's nearly gone, and the
+              occasional note on choosing lenses. Unsubscribe any time.
+            </p>
+          </div>
+
+          <div data-reveal data-delay="1">
+            <form class="vm-news__form" id="newsletterForm" novalidate>
+              <label class="vm-sr" for="newsletterEmail">Email address</label>
+              <input type="email" id="newsletterEmail" name="email"
+                     placeholder="you@example.com" autocomplete="email" required>
+              <button class="vm-btn vm-btn--coat" type="submit">Subscribe</button>
+            </form>
+            <p class="vm-news__note">
+              We keep your address to ourselves. Nothing is shared or sold.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer is rendered by components.js -->
+  <div id="vmFooter"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Load order matters: config -> utils (defines Session) -> api -> components -->
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

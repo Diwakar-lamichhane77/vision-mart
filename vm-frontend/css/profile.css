@@ -1,0 +1,281 @@
+/* ==========================================================================
+   Vision Mart — Profile
+   Identity card on the left, editable panels on the right.
+   ========================================================================== */
+
+.vm-pf-head {
+  padding-top: calc(var(--vm-nav-h) + clamp(2rem, 4vw, 3.5rem));
+  padding-bottom: clamp(1.25rem, 2.5vw, 2rem);
+}
+.vm-pf-head h1 { font-size: var(--vm-fs-display); margin-bottom: 0.35rem; }
+.vm-pf-head p { color: var(--vm-graphite); margin: 0; }
+
+.vm-pf {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  align-items: start;
+  padding-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+/* ------------------------------ Identity card ---------------------------- */
+.vm-pf-card {
+  position: sticky;
+  top: calc(var(--vm-nav-h) + 1.25rem);
+  border: 1px solid var(--vm-line);
+  border-radius: var(--vm-radius);
+  padding: 1.75rem 1.5rem;
+  text-align: center;
+}
+
+/* Monogram avatar. The account has no photo field, so the initial is derived
+   from the name and the tint from the email — stable per person, never a
+   fake upload. */
+.vm-avatar {
+  width: 92px;
+  height: 92px;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--vm-display);
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--vm-paper);
+  background: var(--vm-ink);
+  user-select: none;
+}
+
+.vm-pf-card__name { font-size: 1.35rem; margin-bottom: 0.2rem; }
+.vm-pf-card__email {
+  font-family: var(--vm-mono);
+  font-size: var(--vm-fs-xs);
+  color: var(--vm-slate);
+  word-break: break-all;
+  margin-bottom: 1rem;
+}
+
+.vm-pf-card__meta {
+  border-top: 1px solid var(--vm-line);
+  padding-top: 1rem;
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.6rem;
+  text-align: left;
+}
+.vm-pf-card__meta div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: var(--vm-fs-sm);
+}
+.vm-pf-card__meta dt { color: var(--vm-slate); }
+.vm-pf-card__meta dd { margin: 0; font-weight: 500; text-align: right; }
+
+.vm-pf-card__links { display: grid; gap: 0.5rem; margin-top: 1.25rem; }
+
+.vm-avatar-note {
+  font-size: var(--vm-fs-xs);
+  color: var(--vm-slate);
+  line-height: 1.5;
+  margin-top: 0.75rem;
+}
+
+/* --------------------------------- Panels -------------------------------- */
+.vm-panel {
+  border: 1px solid var(--vm-line);
+  border-radius: var(--vm-radius);
+  padding: clamp(1.15rem, 2.5vw, 1.75rem);
+  margin-bottom: 1.25rem;
+}
+.vm-panel__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+.vm-panel__head h2 { font-size: 1.2rem; margin: 0 0 0.2rem; }
+.vm-panel__head p { font-size: var(--vm-fs-sm); color: var(--vm-graphite); margin: 0; }
+
+/* Read-only view of a saved value, swapped for inputs when editing. */
+.vm-readout { display: grid; gap: 0; }
+.vm-readout > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--vm-line);
+  font-size: 0.9375rem;
+}
+.vm-readout > div:last-child { border-bottom: none; }
+.vm-readout dt { color: var(--vm-slate); font-size: var(--vm-fs-sm); }
+.vm-readout dd { margin: 0; text-align: right; }
+.vm-readout dd.is-blank { color: var(--vm-slate); font-style: italic; }
+
+/* --------------------------------- Fields -------------------------------- */
+.vm-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1rem; }
+@media (max-width: 575.98px) { .vm-grid-2 { grid-template-columns: 1fr; } }
+
+.vm-field { margin-bottom: 1rem; }
+.vm-field:last-of-type { margin-bottom: 0; }
+
+.vm-field__label {
+  display: block;
+  font-size: var(--vm-fs-sm);
+  font-weight: 500;
+  margin-bottom: 0.35rem;
+}
+.vm-field__optional { font-weight: 400; color: var(--vm-slate); font-size: var(--vm-fs-xs); }
+
+.vm-input {
+  width: 100%;
+  padding: 0.8rem 0.95rem;
+  font-family: var(--vm-body);
+  font-size: 0.9375rem;
+  color: var(--vm-ink);
+  background: var(--vm-paper);
+  border: 1px solid var(--vm-line);
+  border-radius: var(--vm-radius);
+}
+.vm-input:focus {
+  outline: none;
+  border-color: var(--vm-coat);
+  box-shadow: 0 0 0 3px var(--vm-coat-wash);
+}
+.vm-input.is-invalid { border-color: var(--vm-danger); }
+.vm-input:disabled,
+.vm-input[readonly] {
+  background: var(--vm-mist-soft);
+  color: var(--vm-graphite);
+  cursor: not-allowed;
+}
+
+.vm-field__hint {
+  font-size: var(--vm-fs-xs);
+  color: var(--vm-slate);
+  margin-top: 0.3rem;
+  line-height: 1.5;
+}
+
+.vm-field__error {
+  display: none;
+  font-size: var(--vm-fs-xs);
+  color: var(--vm-danger);
+  margin-top: 0.3rem;
+}
+.vm-field__error:not(:empty) { display: block; }
+
+.vm-field__wrap { position: relative; }
+.vm-field__wrap .vm-input { padding-right: 3rem; }
+.vm-peek {
+  position: absolute;
+  right: 0.35rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px; height: 36px;
+  display: grid;
+  place-items: center;
+  background: none;
+  border: none;
+  color: var(--vm-slate);
+  cursor: pointer;
+}
+.vm-peek:hover { color: var(--vm-ink); }
+
+/* --------------------------- Password rule ticks ------------------------- */
+.vm-rules { list-style: none; padding: 0; margin: 0.6rem 0 0; display: grid; gap: 0.3rem; }
+.vm-rules li {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: var(--vm-fs-xs);
+  color: var(--vm-slate);
+  transition: color var(--vm-fast);
+}
+.vm-rules li::before {
+  content: "";
+  width: 14px; height: 14px;
+  flex-shrink: 0;
+  border: 1px solid var(--vm-line);
+  border-radius: 50%;
+  transition: background var(--vm-fast), border-color var(--vm-fast);
+}
+.vm-rules li.is-met { color: var(--vm-coat-deep); }
+.vm-rules li.is-met::before {
+  background: var(--vm-coat);
+  border-color: var(--vm-coat);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 8.5l3 3 6-6'/%3E%3C/svg%3E");
+  background-size: 11px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* ------------------------------ Panel alerts ----------------------------- */
+.vm-alert {
+  display: none;
+  align-items: flex-start;
+  gap: 0.55rem;
+  padding: 0.75rem 0.95rem;
+  margin-bottom: 1.1rem;
+  font-size: var(--vm-fs-sm);
+  border-radius: var(--vm-radius);
+}
+.vm-alert.is-shown { display: flex; }
+.vm-alert--error {
+  color: #7A1815;
+  background: rgba(180, 35, 31, 0.08);
+  border: 1px solid rgba(180, 35, 31, 0.2);
+}
+.vm-alert--ok {
+  color: var(--vm-coat-deep);
+  background: var(--vm-coat-wash);
+  border: 1px solid rgba(14, 110, 88, 0.25);
+}
+
+.vm-actions { display: flex; gap: 0.55rem; flex-wrap: wrap; margin-top: 1.25rem; }
+
+/* ------------------------------ Saved address ---------------------------- */
+.vm-address {
+  padding: 1.05rem 1.15rem;
+  border: 1px solid var(--vm-line);
+  border-radius: var(--vm-radius);
+  background: var(--vm-mist-soft);
+  font-size: 0.9375rem;
+  line-height: 1.65;
+}
+.vm-address__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 0.5rem;
+  padding: 0.22rem 0.55rem;
+  font-family: var(--vm-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--vm-ink);
+  color: var(--vm-paper);
+  border-radius: var(--vm-radius);
+}
+.vm-address--empty { color: var(--vm-graphite); background: var(--vm-paper); border-style: dashed; }
+
+.vm-spinner {
+  width: 15px; height: 15px;
+  border: 2px solid rgba(255,255,255,0.35);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  display: inline-block;
+  animation: vm-spin 0.65s linear infinite;
+}
+@keyframes vm-spin { to { transform: rotate(360deg); } }
+
+/* Skeleton while the profile loads. */
+.vm-pf-loading { display: grid; gap: 0.75rem; }
+
+/* -------------------------------- Responsive ----------------------------- */
+@media (max-width: 991.98px) {
+  .vm-pf { grid-template-columns: 1fr; }
+  .vm-pf-card { position: static; }
+}

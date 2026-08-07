@@ -1,0 +1,307 @@
+/* ==========================================================================
+   Vision Mart — Navbar
+   Transparent over the hero, solid once scrolled. Off-canvas drawer on mobile.
+   ========================================================================== */
+
+.vm-nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 1040;
+  height: var(--vm-nav-h);
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background var(--vm-fast), border-color var(--vm-fast),
+              box-shadow var(--vm-fast);
+}
+
+/* Over the dark hero the nav is inverted; once it lifts off it turns solid. */
+.vm-nav--over { color: var(--vm-paper); }
+
+.vm-nav--solid {
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: saturate(180%) blur(14px);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  border-bottom-color: var(--vm-line);
+  color: var(--vm-ink);
+}
+
+.vm-nav__inner {
+  width: 100%;
+  max-width: var(--vm-shell);
+  margin-inline: auto;
+  padding-inline: var(--vm-gutter);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* ---------------------------------- Brand -------------------------------- */
+.vm-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  flex-shrink: 0;
+}
+.vm-brand__name {
+  font-family: var(--vm-display);
+  font-size: 1.45rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+.vm-brand__mark {
+  font-family: var(--vm-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+/* ---------------------------------- Links -------------------------------- */
+.vm-nav__links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin: 0 auto 0 2rem;
+  padding: 0;
+  list-style: none;
+}
+
+.vm-nav__link {
+  position: relative;
+  font-size: var(--vm-fs-sm);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding-block: 0.4rem;
+}
+/* Underline grows from the centre — quiet, and only on the active/hovered item. */
+.vm-nav__link::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transform: translateX(-50%);
+  transition: width var(--vm-slow);
+}
+.vm-nav__link:hover::after,
+.vm-nav__link.is-active::after { width: 100%; }
+
+/* --------------------------------- Actions ------------------------------- */
+.vm-nav__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-left: auto;
+}
+
+.vm-icon-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 1.15rem;
+  cursor: pointer;
+  border-radius: var(--vm-radius);
+  transition: background var(--vm-fast);
+}
+.vm-icon-btn:hover { background: rgba(128, 128, 128, 0.12); }
+
+/* Count badge on cart/wishlist. Hidden at zero rather than showing "0". */
+.vm-icon-btn__count {
+  position: absolute;
+  top: 4px;
+  right: 2px;
+  min-width: 17px;
+  height: 17px;
+  padding-inline: 4px;
+  display: grid;
+  place-items: center;
+  font-family: var(--vm-mono);
+  font-size: 0.625rem;
+  line-height: 1;
+  color: var(--vm-paper);
+  background: var(--vm-coat);
+  border-radius: var(--vm-radius-round);
+}
+.vm-icon-btn__count[hidden] { display: none; }
+
+.vm-nav__auth { display: flex; align-items: center; gap: 0.5rem; margin-left: 0.4rem; }
+
+/* ------------------------------ Account menu ----------------------------- */
+.vm-account { position: relative; }
+
+.vm-account__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.7rem;
+  background: none;
+  border: 1px solid currentColor;
+  border-radius: var(--vm-radius);
+  color: inherit;
+  font-size: var(--vm-fs-sm);
+  font-family: var(--vm-body);
+  cursor: pointer;
+  opacity: 0.9;
+  transition: opacity var(--vm-fast);
+}
+.vm-account__toggle:hover { opacity: 1; }
+
+.vm-account__initial {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--vm-radius-round);
+  background: var(--vm-coat);
+  color: var(--vm-paper);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.vm-account__menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  min-width: 216px;
+  padding: 0.4rem;
+  background: var(--vm-paper);
+  color: var(--vm-ink);
+  border: 1px solid var(--vm-line);
+  border-radius: var(--vm-radius);
+  box-shadow: var(--vm-shadow-lg);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity var(--vm-fast), transform var(--vm-fast), visibility var(--vm-fast);
+}
+.vm-account.is-open .vm-account__menu {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.vm-account__head {
+  padding: 0.7rem 0.8rem 0.6rem;
+  border-bottom: 1px solid var(--vm-line);
+  margin-bottom: 0.35rem;
+}
+.vm-account__head strong { display: block; font-size: var(--vm-fs-sm); }
+.vm-account__head span {
+  font-size: var(--vm-fs-xs);
+  color: var(--vm-slate);
+  word-break: break-all;
+}
+
+.vm-account__item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.6rem 0.8rem;
+  font-size: var(--vm-fs-sm);
+  border-radius: var(--vm-radius);
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+  font-family: var(--vm-body);
+  transition: background var(--vm-fast);
+}
+.vm-account__item:hover { background: var(--vm-mist-soft); }
+.vm-account__item--danger { color: var(--vm-danger); }
+
+/* ------------------------------ Mobile toggle ---------------------------- */
+.vm-nav__burger { display: none; }
+
+/* ------------------------------ Mobile drawer ---------------------------- */
+.vm-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 1050;
+  visibility: hidden;
+}
+.vm-drawer.is-open { visibility: visible; }
+
+.vm-drawer__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(22, 24, 29, 0.5);
+  opacity: 0;
+  transition: opacity var(--vm-fast);
+}
+.vm-drawer.is-open .vm-drawer__scrim { opacity: 1; }
+
+.vm-drawer__panel {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: min(88vw, 380px);
+  background: var(--vm-paper);
+  padding: 1.5rem var(--vm-gutter) 2rem;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform var(--vm-slow);
+  overflow-y: auto;
+}
+.vm-drawer.is-open .vm-drawer__panel { transform: none; }
+
+.vm-drawer__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.vm-drawer__links {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem;
+  border-top: 1px solid var(--vm-line);
+}
+.vm-drawer__links a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.05rem 0;
+  border-bottom: 1px solid var(--vm-line);
+  font-family: var(--vm-display);
+  font-size: 1.35rem;
+}
+.vm-drawer__links i { font-size: 0.9rem; color: var(--vm-slate); }
+
+.vm-drawer__auth { display: grid; gap: 0.6rem; margin-top: auto; }
+
+/* -------------------------------- Responsive ----------------------------- */
+@media (max-width: 991.98px) {
+  .vm-nav__links { display: none; }
+  .vm-nav__auth { display: none; }
+  .vm-nav__burger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 1.35rem;
+    cursor: pointer;
+  }
+  .vm-nav__actions { margin-left: auto; }
+}
+
+@media (min-width: 992px) {
+  .vm-drawer { display: none; }
+}
