@@ -257,3 +257,111 @@ function observeReveals(root = document) {
 
   targets.forEach((el) => observer.observe(el));
 }
+
+/* ============================ Network status ============================= */
+
+/**
+ * A dropped connection is the most common cause of a failed request, and the
+ * least obvious from an error toast alone. This shows a persistent bar while
+ * the browser is offline so the cause is unambiguous, and clears it on
+ * reconnect.
+ *
+ * Called automatically on every page via initLayout().
+ */
+function watchNetwork() {
+  let bar = document.getElementById("vmOffline");
+  if (!bar) {
+    bar = document.createElement("div");
+    bar.id = "vmOffline";
+    bar.className = "vm-offline";
+    bar.setAttribute("role", "status");
+    bar.innerHTML = '<i class="bi bi-wifi-off"></i><span>You are offline — changes won\'t save until you reconnect.</span>';
+    document.body.appendChild(bar);
+  }
+
+  const paint = () => bar.classList.toggle("is-shown", !navigator.onLine);
+  window.addEventListener("online", () => {
+    paint();
+    showToast("Back online.", "success");
+  });
+  window.addEventListener("offline", paint);
+  paint();
+}
+
+/* ========================== Form helpers (shared) ======================== */
+/* Previously duplicated in auth.js, profile.js, checkout.js and contact.js.
+   Kept here so a change to error styling can't drift between forms. */
+
+/**
+ * Sets or clears the validation message under a field.
+ * @returns {boolean} true when the field is valid (no message)
+ */
+function fieldError(input, message = "") {
+  if (!input) return !message;
+  const box = input.closest(".vm-field")?.querySelector(".vm-field__error");
+  input.classList.toggle("is-invalid", Boolean(message));
+  input.setAttribute("aria-invalid", message ? "true" : "false");
+  if (box) box.textContent = message;
+  return !message;
+}
+
+/** Clears every field error inside a form, plus any form-level alert. */
+function clearFormErrors(form) {
+  if (!form) return;
+  form.querySelectorAll(".is-invalid").forEach((i) => {
+    i.classList.remove("is-invalid");
+    i.removeAttribute("aria-invalid");
+  });
+  form.querySelectorAll(".vm-field__error").forEach((e) => (e.textContent = ""));
+  form.querySelectorAll(".vm-alert").forEach((a) => a.classList.remove("is-shown"));
+}
+
+/** Puts a button into (or out of) its loading state, preserving its label. */
+function setBusy(button, busy, label = "Please wait") {
+  if (!button) return;
+  if (busy) {
+    button.dataset.label = button.innerHTML;
+    button.disabled = true;
+    button.setAttribute("aria-busy", "true");
+    button.innerHTML = `<span class="vm-spinner" aria-hidden="true"></span> ${label}`;
+  } else {
+    button.disabled = false;
+    button.removeAttribute("aria-busy");
+    if (button.dataset.label) button.innerHTML = button.dataset.label;
+  }
+}
+
+/**
+ * Paints the server's `errors: [{field, message}]` onto matching inputs.
+ * Anything that doesn't map to a visible field is passed to `onUnmapped`
+ * (usually a form-level alert) so no message is silently dropped.
+ */
+function applyServerErrors(form, error, onUnmapped) {
+  const list = error && error.fieldErrors;
+  if (!Array.isArray(list) || !list.length) {
+    const msg = (error && error.message) || "Something went wrong. Please try again.";
+    if (onUnmapped) onUnmapped(msg); else showToast(msg, "error");
+    return;
+  }
+  const unmapped = [];
+  list.forEach(({ field, message }) => {
+    const input = form.querySelector(`[name="${field}"]`);
+    if (input) fieldError(input, message);
+    else unmapped.push(message);
+  });
+  form.querySelector(".is-invalid")?.focus();
+  if (unmapped.length) {
+    if (onUnmapped) onUnmapped(unmapped.join(" "));
+    else showToast(unmapped.join(" "), "error");
+  }
+}
+
+/** API dates arrive as "2026-08-06 00:45:52". Renders them readably. */
+function formatDate(value, withTime = false) {
+  if (!value) return "";
+  const d = new Date(String(value).replace(" ", "T"));
+  if (Number.isNaN(d.getTime())) return escapeHtml(String(value));
+  const opts = { year: "numeric", month: "short", day: "numeric" };
+  if (withTime) Object.assign(opts, { hour: "2-digit", minute: "2-digit" });
+  return d.toLocaleDateString(undefined, opts);
+}

@@ -4,8 +4,8 @@
   <script>document.documentElement.classList.add("js");</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Your orders — Vision Mart</title>
-  <meta name="robots" content="noindex">
+  <title>Categories — Vision Mart</title>
+  <meta name="description" content="Browse Vision Mart eyewear by category — sunglasses, prescription frames, reading glasses and contact lenses.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,43 +18,33 @@
   <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/navbar.css">
   <link rel="stylesheet" href="../css/home.css">
-  <link rel="stylesheet" href="../css/checkout.css">
+  <link rel="stylesheet" href="../css/shop.css">
   <link rel="stylesheet" href="../css/footer.css">
 </head>
-
 <body>
-  <div id="vmNavbar" class="vm-no-print"></div>
+  <a class="vm-skip" href="#catGrid">Skip to categories</a>
+  <div id="vmNavbar"></div>
 
-  <main class="vm-shell vm-no-print">
-    <header class="vm-co-head">
-      <nav class="vm-breadcrumb"><a href="../index.html">Home</a> / <span>Orders</span></nav>
-      <h1>Your orders</h1>
-      <p id="ordersSubtitle">Loading...</p>
-    </header>
+  <header class="vm-shop-head">
+    <div class="vm-shell">
+      <nav class="vm-breadcrumb"><a href="../index.html">Home</a> / <span>Categories</span></nav>
+      <h1>Shop by category</h1>
+      <p>Every frame is fitted before it ships. <span id="catCount" class="vm-spec"></span></p>
+    </div>
+  </header>
 
-    <div class="vm-tabs" id="orderTabs" hidden></div>
-
-    <!-- Cards rendered by orders.js from GET /orders -->
-    <div id="orderList" style="padding-bottom:clamp(3rem,6vw,5rem)"></div>
+  <main class="vm-shell vm-section--tight">
+    <!-- Filled by categories.js from GET /categories -->
+    <div class="vm-cat-grid" id="catGrid"></div>
   </main>
 
-  <!-- Order detail: timeline + printable invoice -->
-  <div class="vm-modal" id="orderModal" role="dialog" aria-modal="true" aria-label="Order details">
-    <div class="vm-modal__panel">
-      <button class="vm-modal__close vm-no-print" type="button" aria-label="Close">
-        <i class="bi bi-x-lg"></i>
-      </button>
-      <div id="modalBody"></div>
-    </div>
-  </div>
-
-  <div id="vmFooter" class="vm-no-print"></div>
+  <div id="vmFooter"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../js/config.js"></script>
   <script src="../js/utils.js"></script>
   <script src="../js/api.js"></script>
   <script src="../js/components.js"></script>
-  <script src="../js/orders.js"></script>
+  <script src="../js/categories.js"></script>
 </body>
 </html>

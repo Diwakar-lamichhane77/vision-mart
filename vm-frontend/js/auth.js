@@ -61,26 +61,6 @@ function afterAuthTarget() {
   return resolvePath(isSafe ? requested : "index.html");
 }
 
-/** Sets or clears the message under a single field. */
-function fieldError(input, message = "") {
-  if (!input) return !message;
-  const box = input.closest(".vm-field")?.querySelector(".vm-field__error");
-  input.classList.toggle("is-invalid", Boolean(message));
-  input.setAttribute("aria-invalid", message ? "true" : "false");
-  if (box) box.textContent = message;
-  return !message;
-}
-
-/** Clears every field error plus the form-level alert. */
-function clearErrors(form) {
-  form.querySelectorAll(".vm-input").forEach((i) => {
-    i.classList.remove("is-invalid");
-    i.removeAttribute("aria-invalid");
-  });
-  form.querySelectorAll(".vm-field__error").forEach((e) => (e.textContent = ""));
-  hideAlert(form);
-}
-
 function showAlert(form, message) {
   const box = form.querySelector(".vm-auth__alert");
   if (!box) return;
@@ -90,46 +70,6 @@ function showAlert(form, message) {
 
 function hideAlert(form) {
   form.querySelector(".vm-auth__alert")?.classList.remove("is-shown");
-}
-
-/**
- * Paints the backend's `errors: [{ field, message }]` onto the matching
- * inputs. Anything that doesn't map to a visible field falls back to the
- * form-level alert so no message is silently swallowed.
- */
-function applyServerErrors(form, error) {
-  const list = error && error.fieldErrors;
-  if (!Array.isArray(list) || !list.length) {
-    showAlert(form, (error && error.message) || "Something went wrong. Try again.");
-    return;
-  }
-
-  const unmapped = [];
-  list.forEach(({ field, message }) => {
-    const input = form.querySelector(`[name="${field}"]`);
-    if (input) fieldError(input, message);
-    else unmapped.push(message);
-  });
-
-  // Put the focus on the first thing the person needs to correct.
-  form.querySelector(".vm-input.is-invalid")?.focus();
-
-  if (unmapped.length) showAlert(form, unmapped.join(" "));
-}
-
-/** Puts a button into (or out of) its loading state. */
-function setBusy(button, busy, busyLabel = "Please wait") {
-  if (!button) return;
-  if (busy) {
-    button.dataset.label = button.innerHTML;
-    button.disabled = true;
-    button.setAttribute("aria-busy", "true");
-    button.innerHTML = `<span class="vm-spinner" aria-hidden="true"></span> ${busyLabel}`;
-  } else {
-    button.disabled = false;
-    button.removeAttribute("aria-busy");
-    if (button.dataset.label) button.innerHTML = button.dataset.label;
-  }
 }
 
 /** Wires the show/hide toggle on a password input. */
@@ -178,7 +118,7 @@ function initLogin() {
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    clearErrors(form);
+    clearFormErrors(form);
 
     const okEmail = validateLoginEmail(email);
     const okPassword = fieldError(
@@ -224,7 +164,7 @@ function initLogin() {
         showAlert(form, err.message || "This account has been blocked. Contact support for help.");
         return;
       }
-      applyServerErrors(form, err);
+      applyServerErrors(form, err, (m) => showAlert(form, m));
     }
   });
 }
@@ -269,7 +209,7 @@ function initRegister() {
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    clearErrors(form);
+    clearFormErrors(form);
 
     const checks = [
       validateName(name),
@@ -322,7 +262,7 @@ function initRegister() {
         email.focus();
         return;
       }
-      applyServerErrors(form, err);
+      applyServerErrors(form, err, (m) => showAlert(form, m));
     }
   });
 

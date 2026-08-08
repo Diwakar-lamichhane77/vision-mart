@@ -401,14 +401,6 @@ function reviewMarkup(r) {
   </article>`;
 }
 
-/** API dates arrive as "2026-08-06 00:45:52". */
-function formatDate(value) {
-  if (!value) return "";
-  const d = new Date(String(value).replace(" ", "T"));
-  if (Number.isNaN(d.getTime())) return escapeHtml(String(value));
-  return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
-}
-
 /* ============================ Related products =========================== */
 
 async function loadRelated(p) {

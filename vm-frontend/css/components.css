@@ -1,0 +1,262 @@
+/* ==========================================================================
+   Vision Mart — Shared components
+   --------------------------------------------------------------------------
+   Form controls, alerts, spinners and status pills used by more than one
+   page. These previously lived in four separate stylesheets; keeping one
+   copy here means a change to an input style can't drift between the
+   storefront, checkout, profile and admin panel.
+
+   Load order: variables.css -> base.css -> components.css -> <page>.css
+   ========================================================================== */
+
+/* ================================= Fields ================================ */
+.vm-field { margin-bottom: 1rem; }
+
+.vm-field__label {
+  display: block;
+  font-size: var(--vm-fs-sm);
+  font-weight: 500;
+  margin-bottom: 0.35rem;
+}
+
+.vm-field__optional {
+  font-weight: 400;
+  color: var(--vm-slate);
+  font-size: var(--vm-fs-xs);
+}
+
+.vm-field__hint {
+  font-size: var(--vm-fs-xs);
+  color: var(--vm-slate);
+  margin-top: 0.3rem;
+  line-height: 1.5;
+}
+
+/* Error text stays out of the layout until there's something to say. */
+.vm-field__error {
+  display: none;
+  font-size: var(--vm-fs-xs);
+  color: var(--vm-danger);
+  margin-top: 0.3rem;
+}
+.vm-field__error:not(:empty) { display: block; }
+
+/* ------------------------------- Controls -------------------------------- */
+.vm-input,
+.vm-select,
+.vm-textarea {
+  width: 100%;
+  padding: 0.8rem 0.95rem;
+  font-family: var(--vm-body);
+  font-size: 0.9375rem;
+  color: var(--vm-ink);
+  background: var(--vm-paper);
+  border: 1px solid var(--vm-line);
+  border-radius: var(--vm-radius);
+  transition: border-color var(--vm-fast), box-shadow var(--vm-fast);
+}
+.vm-textarea { resize: vertical; min-height: 80px; }
+.vm-select { cursor: pointer; }
+
+.vm-input::placeholder,
+.vm-textarea::placeholder { color: var(--vm-slate); }
+
+.vm-input:focus,
+.vm-select:focus,
+.vm-textarea:focus {
+  outline: none;
+  border-color: var(--vm-coat);
+  box-shadow: 0 0 0 3px var(--vm-coat-wash);
+}
+
+.vm-input.is-invalid,
+.vm-select.is-invalid,
+.vm-textarea.is-invalid { border-color: var(--vm-danger); }
+.vm-input.is-invalid:focus { box-shadow: 0 0 0 3px rgba(180, 35, 31, 0.12); }
+
+.vm-input:disabled,
+.vm-input[readonly] {
+  background: var(--vm-mist-soft);
+  color: var(--vm-graphite);
+  cursor: not-allowed;
+}
+
+/* Password reveal toggle */
+.vm-field__wrap { position: relative; }
+.vm-field__wrap .vm-input { padding-right: 3rem; }
+.vm-peek {
+  position: absolute;
+  right: 0.35rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  background: none;
+  border: none;
+  color: var(--vm-slate);
+  cursor: pointer;
+  border-radius: var(--vm-radius);
+}
+.vm-peek:hover { color: var(--vm-ink); }
+
+/* Checkbox row */
+.vm-check {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  font-size: var(--vm-fs-sm);
+  color: var(--vm-graphite);
+  cursor: pointer;
+}
+.vm-check input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--vm-coat);
+  cursor: pointer;
+  margin-top: 0.15rem;
+}
+
+/* Two-up field layout, stacked on narrow screens. */
+.vm-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1rem; }
+@media (max-width: 575.98px) { .vm-grid-2 { grid-template-columns: 1fr; } }
+
+.vm-actions { display: flex; gap: 0.55rem; flex-wrap: wrap; margin-top: 1.25rem; }
+
+/* ================================= Alerts ================================ */
+.vm-alert {
+  display: none;
+  align-items: flex-start;
+  gap: 0.55rem;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1.15rem;
+  font-size: var(--vm-fs-sm);
+  border-radius: var(--vm-radius);
+}
+.vm-alert.is-shown { display: flex; }
+.vm-alert i { margin-top: 0.1rem; flex-shrink: 0; }
+
+.vm-alert--error,
+.vm-auth__alert {
+  color: #7A1815;
+  background: rgba(180, 35, 31, 0.08);
+  border: 1px solid rgba(180, 35, 31, 0.22);
+}
+.vm-alert--ok {
+  color: var(--vm-coat-deep);
+  background: var(--vm-coat-wash);
+  border: 1px solid rgba(14, 110, 88, 0.25);
+}
+
+/* ================================ Spinner ================================ */
+.vm-spinner {
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  display: inline-block;
+  animation: vm-spin 0.65s linear infinite;
+}
+.vm-spinner--dark { border-color: var(--vm-line); border-top-color: var(--vm-ink); }
+@keyframes vm-spin { to { transform: rotate(360deg); } }
+
+.vm-btn[aria-busy="true"] { pointer-events: none; opacity: 0.75; }
+
+/* A centred spinner for whole-panel loading. */
+.vm-spinner-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 2rem 0;
+  color: var(--vm-graphite);
+  font-size: var(--vm-fs-sm);
+}
+
+/* ============================== Status pills ============================= */
+.vm-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.28rem 0.65rem;
+  font-size: var(--vm-fs-xs);
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  border-radius: 999px;
+  background: var(--vm-mist);
+  color: var(--vm-ink-soft);
+  white-space: nowrap;
+}
+.vm-status--pending   { background: #FDF4E3; color: #8A5A00; }
+.vm-status--confirmed { background: #E8F0FB; color: #1B4F8F; }
+.vm-status--packed    { background: #EFE9FA; color: #4B357F; }
+.vm-status--shipped   { background: #E6F1ED; color: var(--vm-coat-deep); }
+.vm-status--delivered { background: var(--vm-coat); color: #fff; }
+.vm-status--cancelled { background: #FBE9E8; color: #7A1815; }
+.vm-status--active    { background: var(--vm-coat-wash); color: var(--vm-coat-deep); }
+.vm-status--blocked   { background: #FBE9E8; color: #7A1815; }
+
+/* ============================ Password rules ============================= */
+/* Ticks off the server's password rules as each one is satisfied. */
+.vm-rules { list-style: none; padding: 0; margin: 0.6rem 0 0; display: grid; gap: 0.3rem; }
+.vm-rules li {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: var(--vm-fs-xs);
+  color: var(--vm-slate);
+  transition: color var(--vm-fast);
+}
+.vm-rules li::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  border: 1px solid var(--vm-line);
+  border-radius: 50%;
+  transition: background var(--vm-fast), border-color var(--vm-fast);
+}
+.vm-rules li.is-met { color: var(--vm-coat-deep); }
+.vm-rules li.is-met::before {
+  background: var(--vm-coat);
+  border-color: var(--vm-coat);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 8.5l3 3 6-6'/%3E%3C/svg%3E");
+  background-size: 11px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* ============================== Breadcrumb ============================== */
+.vm-breadcrumb {
+  font-family: var(--vm-mono);
+  font-size: var(--vm-fs-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--vm-slate);
+  margin-bottom: 0.75rem;
+}
+.vm-breadcrumb a:hover { color: var(--vm-ink); }
+
+/* =========================== Offline indicator ========================== */
+/* Shown by utils.js when the browser goes offline, so a failed request has
+   an obvious cause rather than looking like a broken site. */
+.vm-offline {
+  position: fixed;
+  left: 50%;
+  bottom: 1rem;
+  transform: translateX(-50%) translateY(150%);
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1.1rem;
+  background: var(--vm-ink);
+  color: var(--vm-paper);
+  border-radius: var(--vm-radius-round);
+  box-shadow: var(--vm-shadow-lg);
+  font-size: var(--vm-fs-sm);
+  transition: transform var(--vm-slow);
+}
+.vm-offline.is-shown { transform: translateX(-50%) translateY(0); }
+.vm-offline i { color: #FF8A80; }

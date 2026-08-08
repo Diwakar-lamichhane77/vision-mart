@@ -207,15 +207,6 @@ function statusPill(status) {
       <i class="bi ${STATUS_ICON[status] || "bi-dot"}"></i>${escapeHtml(status)}</span>`;
 }
 
-function formatDate(value, withTime = false) {
-  if (!value) return "";
-  const d = new Date(String(value).replace(" ", "T"));
-  if (Number.isNaN(d.getTime())) return escapeHtml(String(value));
-  const opts = { year: "numeric", month: "short", day: "numeric" };
-  if (withTime) Object.assign(opts, { hour: "2-digit", minute: "2-digit" });
-  return d.toLocaleDateString(undefined, opts);
-}
-
 /* ================================= Actions =============================== */
 
 function bindCardActions() {

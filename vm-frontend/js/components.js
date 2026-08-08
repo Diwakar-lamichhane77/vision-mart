@@ -389,4 +389,5 @@ function initLayout({ transparentNav = false } = {}) {
 
   refreshCounts();
   observeReveals();
+  watchNetwork();   // offline indicator, see utils.js
 }

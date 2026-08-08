@@ -44,53 +44,8 @@
 .vm-panel__head h2 { font-size: 1.15rem; margin: 0; }
 
 /* --------------------------------- Fields -------------------------------- */
-.vm-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1rem; }
-@media (max-width: 575.98px) { .vm-grid-2 { grid-template-columns: 1fr; } }
 
-.vm-field { margin-bottom: 1rem; }
-.vm-field__label {
-  display: block;
-  font-size: var(--vm-fs-sm);
-  font-weight: 500;
-  margin-bottom: 0.35rem;
-}
-.vm-field__optional { font-weight: 400; color: var(--vm-slate); font-size: var(--vm-fs-xs); }
-
-.vm-input, .vm-textarea {
-  width: 100%;
-  padding: 0.8rem 0.95rem;
-  font-family: var(--vm-body);
-  font-size: 0.9375rem;
-  color: var(--vm-ink);
-  background: var(--vm-paper);
-  border: 1px solid var(--vm-line);
-  border-radius: var(--vm-radius);
-}
-.vm-textarea { resize: vertical; min-height: 80px; }
-.vm-input:focus, .vm-textarea:focus {
-  outline: none;
-  border-color: var(--vm-coat);
-  box-shadow: 0 0 0 3px var(--vm-coat-wash);
-}
-.vm-input.is-invalid { border-color: var(--vm-danger); }
-
-.vm-field__error {
-  display: none;
-  font-size: var(--vm-fs-xs);
-  color: var(--vm-danger);
-  margin-top: 0.3rem;
-}
-.vm-field__error:not(:empty) { display: block; }
-
-.vm-check {
-  display: inline-flex;
-  align-items: flex-start;
-  gap: 0.55rem;
-  font-size: var(--vm-fs-sm);
-  color: var(--vm-graphite);
-  cursor: pointer;
-}
-.vm-check input { width: 16px; height: 16px; accent-color: var(--vm-coat); margin-top: 0.15rem; }
+@media (max-width: 575.98px) {  }
 
 /* ----------------------------- Payment options --------------------------- */
 .vm-pay { display: grid; gap: 0.6rem; }
@@ -207,29 +162,7 @@
   margin-top: 0.8rem;
 }
 
-.vm-alert {
-  display: none;
-  align-items: flex-start;
-  gap: 0.55rem;
-  padding: 0.8rem 1rem;
-  margin-bottom: 1.15rem;
-  font-size: var(--vm-fs-sm);
-  color: #7A1815;
-  background: rgba(180, 35, 31, 0.08);
-  border: 1px solid rgba(180, 35, 31, 0.2);
-  border-radius: var(--vm-radius);
-}
-.vm-alert.is-shown { display: flex; }
-
-.vm-spinner {
-  width: 15px; height: 15px;
-  border: 2px solid rgba(255,255,255,0.35);
-  border-top-color: currentColor;
-  border-radius: 50%;
-  display: inline-block;
-  animation: vm-spin 0.65s linear infinite;
-}
-@keyframes vm-spin { to { transform: rotate(360deg); } }
+ }
 
 /* ========================== ORDERS: history list ========================= */
 .vm-order-card {
@@ -287,24 +220,6 @@
 }
 
 /* Status pills, coloured by stage. */
-.vm-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.3rem 0.65rem;
-  font-size: var(--vm-fs-xs);
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  border-radius: 999px;
-  background: var(--vm-mist);
-  color: var(--vm-ink-soft);
-}
-.vm-status--pending   { background: #FDF4E3; color: #8A5A00; }
-.vm-status--confirmed { background: #E8F0FB; color: #1B4F8F; }
-.vm-status--packed    { background: #EFE9FA; color: #4B357F; }
-.vm-status--shipped   { background: #E6F1ED; color: var(--vm-coat-deep); }
-.vm-status--delivered { background: var(--vm-coat); color: #fff; }
-.vm-status--cancelled { background: #FBE9E8; color: #7A1815; }
 
 .vm-pay-pill {
   font-family: var(--vm-mono);

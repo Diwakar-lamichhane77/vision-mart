@@ -183,27 +183,49 @@ const getPaymentByOrder = asyncHandler(async (req, res) => {
  * eSewa server-side) before anything is marked Paid.
  */
 const esewaSuccessCallback = asyncHandler(async (req, res) => {
-  const { oid: orderNumber, refId } = req.query;
+  const { data } = req.query;
 
-  return sendSuccess(res, 200, 'eSewa returned a success response. Verification is still required.', {
-    order_number: orderNumber || null,
-    transaction_id: refId || null,
-    verification_required: true,
-    next_step: 'POST /api/payments/verify with { order_id, transaction_id }'
-  });
+  if (!data) {
+    return res.redirect(
+      `${process.env.FRONTEND_URL}/vm-frontend/pages/orders.html?payment=failed`
+    );
+  }
+
+  let paymentData;
+
+  try {
+    paymentData = JSON.parse(
+      Buffer.from(data, "base64").toString("utf8")
+    );
+  } catch (error) {
+    console.error("Invalid eSewa callback data:", error);
+
+    return res.redirect(
+      `${process.env.FRONTEND_URL}/vm-frontend/pages/orders.html?payment=failed`
+    );
+  }
+
+  const transactionUuid =
+    paymentData.transaction_uuid || "";
+
+  const transactionCode =
+    paymentData.transaction_code || "";
+
+  return res.redirect(
+    `${process.env.FRONTEND_URL}/vm-frontend/pages/orders.html` +
+    `?payment=success` +
+    `&transaction_uuid=${encodeURIComponent(transactionUuid)}` +
+    `&transaction_code=${encodeURIComponent(transactionCode)}`
+  );
 });
-
 /**
  * GET /api/payments/esewa/failure
  */
 const esewaFailureCallback = asyncHandler(async (req, res) => {
-  const { oid: orderNumber } = req.query;
-  return sendSuccess(res, 200, 'The eSewa payment was cancelled or failed. Your order has not been paid.', {
-    order_number: orderNumber || null,
-    payment_status: 'Failed'
-  });
+  return res.redirect(
+    `${process.env.FRONTEND_URL}/vm-frontend/pages/orders.html?payment=failed`
+  );
 });
-
 /**
  * PUT /api/payments/:orderId/status
  * Admin only — manual reconciliation (e.g. recording an offline refund, or

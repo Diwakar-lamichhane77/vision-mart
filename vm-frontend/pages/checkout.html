@@ -15,10 +15,99 @@
 
   <link rel="stylesheet" href="../css/variables.css">
   <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/navbar.css">
   <link rel="stylesheet" href="../css/home.css">
   <link rel="stylesheet" href="../css/checkout.css">
   <link rel="stylesheet" href="../css/footer.css">
+
+  <!-- ======================================================================
+       Payment method logos
+       ----------------------------------------------------------------------
+       The payment options are rendered by checkout.js from
+       GET /payments/methods, so their markup isn't in this file. These rules
+       attach a logo to each option by matching the radio's `value`, which
+       keeps the change contained to checkout.html.
+
+       Logos are loaded from the official brand URLs. If either host blocks
+       hotlinking, moves the file, or is unreachable, the slot falls back to a
+       brand-coloured wordmark so the layout never breaks. To serve them
+       yourself instead, save the two files into assets/img/ and swap the
+       url() values for ../assets/img/esewa.png and ../assets/img/khalti.png.
+       ====================================================================== -->
+  <style>
+    /* Put the name and its logo on one line. */
+    .vm-pay__name {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    /* The logo tile. White so wordmark logos (which usually ship on a white
+       or transparent background) sit cleanly, with a hairline border so the
+       tile reads as deliberate rather than as a gap. */
+    .vm-pay__opt input[value="eSewa"]  ~ span .vm-pay__name::before,
+    .vm-pay__opt input[value="Khalti"] ~ span .vm-pay__name::before,
+    .vm-pay__opt input[value="COD"]    ~ span .vm-pay__name::before {
+      content: "";
+      order: -1;                       /* logo sits before the label text */
+      width: 68px;
+      height: 30px;
+      flex: 0 0 68px;
+      border: 1px solid var(--vm-line);
+      border-radius: 4px;
+      background-color: #0dda3a;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 84% auto;       /* contain, with a little breathing room */
+      /* Fallback wordmark, visible only if the image fails to load. */
+      font-family: var(--vm-body);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      display: inline-grid;
+      place-items: center;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    /* eSewa — official logo, brand green as the fallback colour */
+    .vm-pay__opt input[value="eSewa"] ~ span .vm-pay__name::before {
+      content: "";
+      color: #60BB46;
+      background-image: url("https://esewa.com.np/common/images/esewa_logo.png");
+    }
+
+    /* Khalti — official logo, brand purple as the fallback colour */
+    .vm-pay__opt input[value="Khalti"] ~ span .vm-pay__name::before {
+      content: "";
+      color: #e61717;
+      background-image: url("https://web.khalti.com/samagri/img/logo1.png");
+    }
+
+    /* Cash on delivery has no brand mark — a neutral tile keeps the three
+       options aligned instead of leaving a ragged edge. */
+    .vm-pay__opt input[value="COD"] ~ span .vm-pay__name::before {
+      content: "CASH";
+      color: var(--vm-graphite);
+      background-color: var(--vm-mist-soft);
+    }
+
+    /* A disabled gateway is greyed out; its logo should follow. */
+    .vm-pay__opt.is-disabled .vm-pay__name::before { filter: grayscale(1); opacity: 0.6; }
+
+    /* Keep the description aligned with the label rather than the logo. */
+    .vm-pay__desc { padding-left: calc(68px + 0.6rem); }
+
+    @media (max-width: 575.98px) {
+      .vm-pay__opt input[value="eSewa"]  ~ span .vm-pay__name::before,
+      .vm-pay__opt input[value="Khalti"] ~ span .vm-pay__name::before,
+      .vm-pay__opt input[value="COD"]    ~ span .vm-pay__name::before {
+        width: 54px; height: 26px; flex-basis: 54px; font-size: 0.6rem;
+      }
+      .vm-pay__desc { padding-left: 0; }
+    }
+  </style>
 </head>
 
 <body>

@@ -12,16 +12,6 @@
 .vm-shop-head h1 { font-size: var(--vm-fs-display); margin-bottom: 0.4rem; }
 .vm-shop-head p { color: var(--vm-graphite); margin: 0; }
 
-.vm-breadcrumb {
-  font-family: var(--vm-mono);
-  font-size: var(--vm-fs-xs);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--vm-slate);
-  margin-bottom: 0.75rem;
-}
-.vm-breadcrumb a:hover { color: var(--vm-ink); }
-
 /* ------------------------------- Page layout ----------------------------- */
 .vm-shop {
   display: grid;
@@ -448,4 +438,13 @@
 @media (max-width: 575.98px) {
   .vm-results { grid-template-columns: repeat(2, 1fr); gap: 1.25rem 0.75rem; }
   .vm-count { width: 100%; margin-left: 0; }
+}
+
+/* Category index tiles carry a short description under the count. */
+.vm-cat__desc {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: var(--vm-fs-xs);
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.45;
 }

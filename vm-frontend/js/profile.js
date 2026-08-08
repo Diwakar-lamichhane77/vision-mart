@@ -130,7 +130,7 @@ function toggleDetailsEdit(editing) {
     document.getElementById("pfPhoneInput").value = profile.phone || "";
     // Shown for context only — the server ignores email on this endpoint.
     document.getElementById("pfEmailInput").value = profile.email || "";
-    clearErrors(document.getElementById("detailsForm"));
+    clearFormErrors(document.getElementById("detailsForm"));
     document.getElementById("pfNameInput").focus();
   }
 }
@@ -161,26 +161,12 @@ function toggleAddressEdit(editing) {
   if (editing) {
     document.getElementById("pfAddressInput").value = profile.address || "";
     document.getElementById("pfCityInput").value = profile.city || "";
-    clearErrors(document.getElementById("addressForm"));
+    clearFormErrors(document.getElementById("addressForm"));
     document.getElementById("pfAddressInput").focus();
   }
 }
 
 /* ================================ Helpers =============================== */
-
-function fieldError(input, message = "") {
-  const box = input.closest(".vm-field")?.querySelector(".vm-field__error");
-  input.classList.toggle("is-invalid", Boolean(message));
-  input.setAttribute("aria-invalid", message ? "true" : "false");
-  if (box) box.textContent = message;
-  return !message;
-}
-
-function clearErrors(form) {
-  form.querySelectorAll(".vm-input").forEach((i) => i.classList.remove("is-invalid"));
-  form.querySelectorAll(".vm-field__error").forEach((e) => (e.textContent = ""));
-  form.querySelectorAll(".vm-alert").forEach((a) => a.classList.remove("is-shown"));
-}
 
 function showPanelAlert(form, message, kind = "error") {
   const box = form.querySelector(".vm-alert");
@@ -188,38 +174,6 @@ function showPanelAlert(form, message, kind = "error") {
   box.className = `vm-alert vm-alert--${kind} is-shown`;
   box.innerHTML = `<i class="bi ${kind === "ok" ? "bi-check-circle-fill" : "bi-exclamation-circle-fill"}"></i>
     <span>${escapeHtml(message)}</span>`;
-}
-
-/**
- * Paints the server's `errors: [{field, message}]` onto matching inputs;
- * anything unmatched goes to the panel alert so no message is lost.
- */
-function applyServerErrors(form, err) {
-  const list = err && err.fieldErrors;
-  if (!Array.isArray(list) || !list.length) {
-    showPanelAlert(form, err?.message || "Something went wrong. Please try again.");
-    return;
-  }
-  const unmapped = [];
-  list.forEach(({ field, message }) => {
-    const input = form.querySelector(`[name="${field}"]`);
-    if (input) fieldError(input, message);
-    else unmapped.push(message);
-  });
-  form.querySelector(".vm-input.is-invalid")?.focus();
-  if (unmapped.length) showPanelAlert(form, unmapped.join(" "));
-}
-
-function setBusy(button, busy, label = "Saving") {
-  if (!button) return;
-  if (busy) {
-    button.dataset.label = button.innerHTML;
-    button.disabled = true;
-    button.innerHTML = `<span class="vm-spinner"></span> ${label}`;
-  } else {
-    button.disabled = false;
-    if (button.dataset.label) button.innerHTML = button.dataset.label;
-  }
 }
 
 /* ============================== Save details ============================= */
@@ -237,7 +191,7 @@ document.addEventListener("DOMContentLoaded", () => {
 async function saveDetails(e) {
   e.preventDefault();
   const form = e.currentTarget;
-  clearErrors(form);
+  clearFormErrors(form);
 
   const nameInput = document.getElementById("pfNameInput");
   const phoneInput = document.getElementById("pfPhoneInput");
@@ -280,7 +234,7 @@ async function saveDetails(e) {
     toggleDetailsEdit(false);
     showToast("Your details have been updated", "success");
   } catch (err) {
-    applyServerErrors(form, err);
+    applyServerErrors(form, err, (m) => showPanelAlert(form, m));
   } finally {
     setBusy(btn, false);
   }
@@ -289,7 +243,7 @@ async function saveDetails(e) {
 async function saveAddress(e) {
   e.preventDefault();
   const form = e.currentTarget;
-  clearErrors(form);
+  clearFormErrors(form);
 
   const addressInput = document.getElementById("pfAddressInput");
   const cityInput = document.getElementById("pfCityInput");
@@ -311,7 +265,7 @@ async function saveAddress(e) {
     toggleAddressEdit(false);
     showToast("Your delivery address has been saved", "success");
   } catch (err) {
-    applyServerErrors(form, err);
+    applyServerErrors(form, err, (m) => showPanelAlert(form, m));
   } finally {
     setBusy(btn, false);
   }
@@ -352,7 +306,7 @@ function paintRules(value) {
 async function changePassword(e) {
   e.preventDefault();
   const form = e.currentTarget;
-  clearErrors(form);
+  clearFormErrors(form);
 
   const current = document.getElementById("pwCurrent");
   const next = document.getElementById("pwNew");
@@ -396,7 +350,7 @@ async function changePassword(e) {
       current.focus();
       return;
     }
-    applyServerErrors(form, err);
+    applyServerErrors(form, err, (m) => showPanelAlert(form, m));
   } finally {
     setBusy(btn, false);
   }

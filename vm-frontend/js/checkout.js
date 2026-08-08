@@ -183,14 +183,6 @@ function renderSummary() {
 
 /* ================================ Validation ============================= */
 
-function fieldError(input, message = "") {
-  const box = input.closest(".vm-field")?.querySelector(".vm-field__error");
-  input.classList.toggle("is-invalid", Boolean(message));
-  input.setAttribute("aria-invalid", message ? "true" : "false");
-  if (box) box.textContent = message;
-  return !message;
-}
-
 function showAlert(message) {
   const box = document.getElementById("checkoutAlert");
   box.querySelector("span").textContent = message;
